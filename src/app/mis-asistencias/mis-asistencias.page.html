@@ -1,0 +1,53 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Asistencias por Asignatura</ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="menu"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <h2>Selecciona una Asignatura</h2>
+        <!-- Selector de asignaturas -->
+        <ion-item>
+          <ion-label>Asignatura</ion-label>
+          <ion-select [(ngModel)]="asignaturaSeleccionada" (ionChange)="filtrarAsistencias()">
+            <ion-select-option *ngFor="let asignatura of asignaturas">{{ asignatura }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <!-- Listado de asistencias filtradas -->
+    <ion-list *ngIf="asistenciasFiltradas.length > 0">
+      <ion-item *ngFor="let asistencia of asistenciasFiltradas">
+        <ion-label>
+          <h2>Alumno: {{ asistencia.alumno }}</h2>
+          <p>Fecha: {{ asistencia.fecha }}</p>
+          <p>Estado: <strong>{{ asistencia.estado }}</strong></p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-row *ngIf="asistenciasFiltradas.length === 0">
+      <ion-col size="12">
+        <p>No hay asistencias registradas para esta asignatura.</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>Regresar</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="pag-inicio"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
+
+
+

@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Cambiar Clave</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label position="floating">Clave actual</ion-label>
+    <ion-input
+      type="password"
+      [(ngModel)]="claveActual"
+      name="claveActual"
+    ></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Nueva clave</ion-label>
+    <ion-input
+      type="password"
+      [(ngModel)]="nuevaClave"
+      name="nuevaClave"
+    ></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Confirmar nueva clave</ion-label>
+    <ion-input
+      type="password"
+      [(ngModel)]="confirmarClave"
+      name="confirmarClave"
+    ></ion-input>
+  </ion-item>
+
+  <ion-button expand="full" (click)="changePassword()">Cambiar Clave</ion-button>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+
+    <ion-title>Regresar</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="pag-inicio"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
