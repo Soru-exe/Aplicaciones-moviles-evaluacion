@@ -20,7 +20,7 @@ export class ApirestService {
     return this.http.patch(`${this.apiUrl}/${id}`, { clave: nuevaClave });
   }
 
-  // Función de login (opcional, si la tienes en este servicio)
+  // Función para iniciar sesión
   login(nombreUsuario: string, clave: string): Observable<any> {
     return this.http.get<any[]>(`${this.apiUrl}?nombreUsuario=${nombreUsuario}&clave=${clave}`);
   }
