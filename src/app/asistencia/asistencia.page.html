@@ -1,18 +1,54 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>asistencia</ion-title>
+    <ion-title>
+      Generar QR
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/pag-inicio-docente"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <img src="assets/rickroll.png" alt="QR">
+  <!-- Mostrar datos del docente si el usuario es un docente -->
+  <ion-item *ngIf="userType === 'docente'">
+    <ion-label>Profesor: {{ currentProfessor?.nombre }}</ion-label>
+  </ion-item>
+  
+  <!-- Mostrar materia y secciones si el usuario es un docente -->
+  <ion-item *ngIf="userType === 'docente' && currentProfessor?.materias?.length > 0">
+    <ion-label>Materia: {{ currentProfessor?.materias[0]?.materia }}</ion-label>
+  </ion-item>
+
+  <ion-item *ngIf="userType === 'docente' && currentProfessor?.materias[0]?.secciones?.length > 0">
+    <ion-label>Sección</ion-label>
+    <ion-select [(ngModel)]="currentProfessor.materias[0].seccion" interface="popover" placeholder="Seleccionar sección">
+      <ion-select-option *ngFor="let seccion of currentProfessor.materias[0].secciones" [value]="seccion">{{ seccion }}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Mostrar el botón para generar QR si es un docente -->
+  <ion-button *ngIf="userType === 'docente' && currentProfessor?.materias[0]?.secciones?.length > 0" (click)="generarQR()">Generar QR</ion-button>
+
+  <!-- Generar el QR cuando se ha presionado el botón -->
+  <qrcode *ngIf="qrGenerado" [qrdata]="generateQRData()" [width]="400"></qrcode>
+
+  <!-- Mostrar los datos del estudiante si el usuario es un estudiante -->
+  <ion-item *ngIf="userType === 'estudiante'">
+    <ion-label>Estudiante: {{ currentStudent?.nombre }}</ion-label>
+  </ion-item>
+
+  <!-- Mostrar materia del estudiante -->
+  <ion-item *ngIf="userType === 'estudiante' && currentStudent?.materias?.length > 0">
+    <ion-label>Materia: {{ currentStudent?.materias[0]?.materia }}</ion-label>
+  </ion-item>
 </ion-content>
+
 <ion-footer>
   <ion-toolbar>
-
     <ion-title>Regresar</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="pag-inicio"></ion-back-button>
+      <ion-back-button defaultHref="/pag-inicio"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>

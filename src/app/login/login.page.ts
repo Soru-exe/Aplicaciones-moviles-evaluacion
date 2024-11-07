@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController, LoadingController } from '@ionic/angular';
-import { ApirestService } from './apirest.service'; // Asegúrate de importar el servicio
+import { ApirestService } from './apirest.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +17,7 @@ export class LoginPage {
     private router: Router,
     private toastController: ToastController,
     private loadingController: LoadingController,
-    private apiService: ApirestService // Inyección del servicio
+    private apiService: ApirestService
   ) {}
 
   async onSubmit() {
@@ -34,17 +34,22 @@ export class LoginPage {
 
           setTimeout(async () => {
             await loading.dismiss();
-            
-            // Suponiendo que el primer usuario de la lista es el que se ha autenticado
+
             const usuario = usuarios[0];
 
-            // Guardar el ID del usuario y las credenciales en localStorage
+            // Guardar el ID del usuario, credenciales y tipo en localStorage
             localStorage.setItem('usuario', usuario.id.toString());
-            localStorage.setItem('username', this.username); // Guardar nombre de usuario
-            localStorage.setItem('password', this.password); // Guardar contraseña
-            localStorage.setItem('isAuthenticated', 'true'); // Guarda el estado de autenticación
+            localStorage.setItem('username', this.username);
+            localStorage.setItem('password', this.password);
+            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('tipoUsuario', usuario.tipo); // Guardar el tipo de usuario
 
-            this.router.navigate(['/pag-inicio']); // Redirige a la página de inicio
+            // Redirigir según el tipo de usuario
+            if (usuario.tipo === 'docente') {
+              this.router.navigate(['/pag-inicio-docente']);
+            } else if (usuario.tipo === 'estudiante') {
+              this.router.navigate(['/pagina-inicio-estudiante']);
+            }
           }, 2000);
         } else {
           this.showToast('Credenciales incorrectas');
