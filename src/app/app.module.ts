@@ -8,8 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxScannerQrcodeModule } from 'ngx-scanner-qrcode';
-NgxScannerQrcodeModule
-HttpClientModule
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';  // Importa BarcodeScanner correctamente
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,10 +17,13 @@ HttpClientModule
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    QRCodeModule, // Asegúrate de importar el QRCodeModule
-    NgxScannerQrcodeModule // Y también el módulo del escáner QR
+    QRCodeModule,            // Módulo para generar códigos QR
+    NgxScannerQrcodeModule    // Módulo para escanear códigos QR
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    BarcodeScanner            // Agrega BarcodeScanner a los proveedores
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

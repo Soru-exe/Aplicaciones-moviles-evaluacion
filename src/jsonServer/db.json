@@ -21,7 +21,20 @@
       "clave": "OtraClave",
       "tipo": "estudiante",
       "nombre": "Carlos Silva",
-      "materias": []
+      "materias": [
+        {
+          "materia": "Matematicas",
+          "secciones": ["mat001"]
+        }
+      ]
+    }
+  ],
+  "asistencias": [
+    {
+      "idEstudiante": "2",
+      "idMateria": "Matematicas",
+      "fecha": "2024-11-06",
+      "estado": "presente"
     }
   ]
 }

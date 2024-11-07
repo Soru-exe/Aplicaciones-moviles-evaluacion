@@ -44,7 +44,14 @@ const routes: Routes = [
     path: 'pagina-inicio-estudiante',
     loadChildren: () => import('./pagina-inicio-estudiante/pagina-inicio-estudiante.module').then( m => m.PaginaInicioEstudiantePageModule)
   },
-
+  {
+    path: 'generar-qr',
+    loadChildren: () => import('./generar-qr/generar-qr.module').then( m => m.GenerarQrPageModule)
+  },
+  {
+    path: 'lector-qr',
+    loadChildren: () => import('./lector-qr/lector-qr.module').then( m => m.LectorQrPageModule)
+  },
   
 ];
 

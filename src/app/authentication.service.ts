@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private usersUrl = 'JsonServer/db.json';  // Ruta hacia el archivo JSON unificado
+  private usersUrl = 'jsonServer/db.json';  // Ruta hacia el archivo JSON unificado
   private currentStudent: any;
   private currentProfessor: any;
 

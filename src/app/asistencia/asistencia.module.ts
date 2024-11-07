@@ -14,7 +14,7 @@ import { AsistenciaPage } from './asistencia.page';
     FormsModule,
     IonicModule,
     AsistenciaPageRoutingModule,
-    QRCodeModule
+    QRCodeModule,
   ],
   declarations: [AsistenciaPage]
 })
