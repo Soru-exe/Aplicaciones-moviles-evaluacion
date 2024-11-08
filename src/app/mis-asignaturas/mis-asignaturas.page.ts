@@ -1,18 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-mis-asignaturas',
   templateUrl: './mis-asignaturas.page.html',
   styleUrls: ['./mis-asignaturas.page.scss'],
 })
-export class MisAsignaturasPage {
-  asignaturas: { nombre: string; seccion: string; hora: string }[] = [
-    { nombre: 'Programación Avanzada', seccion: 'P101', hora:'10:30' },
-    { nombre: 'Bases de Datos', seccion: 'B102',  hora:'15:30' },
-    { nombre: 'Redes y Comunicaciones', seccion: 'C201',  hora:'14:30' },
-    { nombre: 'Programacion de bases de datos', seccion: 'PD501',  hora:'12:30' },
-  ];
+export class MisAsignaturasPage implements OnInit {
+  asignaturas: { materia: string; secciones: string[] }[] = [];
 
-  constructor() {}
+  constructor(private authService: AuthenticationService) {}
 
+  ngOnInit() {
+    // Cargar asignaturas del usuario actual
+    this.authService.getCurrentUserAsignaturas().subscribe((asignaturas) => {
+      this.asignaturas = asignaturas;
+    });
+  }
 }

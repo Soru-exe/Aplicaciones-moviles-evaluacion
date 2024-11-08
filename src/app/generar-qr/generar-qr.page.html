@@ -1,14 +1,25 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>Generar QR</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-<ion-text color="primary">
-  <h1>QR</h1>
-</ion-text>
-<input type="text" [(ngModel)]="texto">
-<br><br>
-<qrcode [qrdata]="texto" [width]="400"></qrcode>
+<ion-content>
+  <ion-item>
+    <ion-label>Seleccione Asignatura</ion-label>
+    <ion-select [(ngModel)]="selectedAsignatura" interface="popover">
+      <ion-select-option *ngFor="let asignatura of asignaturas" [value]="asignatura">
+        {{ asignatura.materia }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-button expand="full" (click)="generarQR()" [disabled]="!selectedAsignatura">
+    Generar QR
+  </ion-button>
+
+  <div *ngIf="qrGenerado" class="qr-container">
+   <qrcode [qrdata]="qrData"></qrcode>
+    <p>QR generado para: {{ qrData }}</p>
+  </div>
 </ion-content>

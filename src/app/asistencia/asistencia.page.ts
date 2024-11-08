@@ -20,25 +20,24 @@ export class AsistenciaPage implements OnInit {
     this.userType = this.authService.getCurrentUserType();
 
     if (this.userType === 'docente') {
-      this.currentProfessor = this.authService.getCurrentProfessor();
+      this.authService.getCurrentProfessor().subscribe((professor: any) => {
+        this.currentProfessor = professor;
+      });
     } else if (this.userType === 'estudiante') {
-      this.currentStudent = this.authService.getCurrentStudent();
+      this.authService.getCurrentStudent().subscribe((student: any) => {
+        this.currentStudent = student;
+      });
     }
   }
 
-  // Función para generar el QR según los datos del docente o estudiante
-  generarQR() {
-    this.qrGenerado = true;
-  }
-
-  // Función que decide qué datos poner en el QR dependiendo del tipo de usuario
+  // Genera los datos del QR según el tipo de usuario
   generateQRData(): string {
-    if (this.userType === 'docente') {
-      const materia = this.currentProfessor?.materias[0]?.materia;
-      const seccion = this.currentProfessor?.materias[0]?.seccionActual;
-      return `${this.currentProfessor?.nombre} - ${materia} - Sección: ${seccion}`;
-    } else if (this.userType === 'estudiante') {
-      return `${this.currentStudent?.nombre} - Materia: ${this.currentStudent?.materias[0]?.materia}`;
+    if (this.userType === 'docente' && this.currentProfessor) {
+      const materia = this.currentProfessor.materias[0].materia;
+      const seccion = this.currentProfessor.materias[0].seccionActual;
+      return `${this.currentProfessor.nombre} - ${materia} - Sección: ${seccion}`;
+    } else if (this.userType === 'estudiante' && this.currentStudent) {
+      return `${this.currentStudent.nombre} - Materia: ${this.currentStudent.materias[0].materia}`;
     }
     return '';
   }

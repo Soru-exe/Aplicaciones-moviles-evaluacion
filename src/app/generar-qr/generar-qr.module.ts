@@ -14,7 +14,7 @@ import { GenerarQrPage } from './generar-qr.page';
     FormsModule,
     IonicModule,
     GenerarQrPageRoutingModule,
-    QRCodeModule,
+    QRCodeModule
   ],
   declarations: [GenerarQrPage]
 })

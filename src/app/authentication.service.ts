@@ -1,62 +1,50 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private usersUrl = 'jsonServer/db.json';  // Ruta hacia el archivo JSON unificado
-  private currentStudent: any;
-  private currentProfessor: any;
+  private usersUrl = 'http://localhost:3000/usuarios'; // URL de tu JSON Server
 
-  constructor(private http: HttpClient) {
-    // Al inicializar el servicio, intenta obtener el estado guardado en almacenamiento local
-    const storedProfessor = localStorage.getItem('currentProfessor');
-    if (storedProfessor) {
-      this.currentProfessor = JSON.parse(storedProfessor);
-    }
+  constructor(private http: HttpClient) {}
 
-    const storedStudent = localStorage.getItem('currentStudent');
-    if (storedStudent) {
-      this.currentStudent = JSON.parse(storedStudent);
-    }
+  getCurrentUserType(): string {
+    return localStorage.getItem('userType') || '';
   }
 
-  // Método para obtener los usuarios por rol (docente o estudiante)
-  getUsersByRole(role: string): Observable<any[]> {
-    return this.http.get<any[]>(this.usersUrl).pipe(
-      map((data: any) => data.usuarios.filter((user: any) => user.tipo === role)) // Filtra según el rol
+  // Método para obtener el profesor actual
+  getCurrentProfessor(): Observable<any> {
+    const userId = localStorage.getItem('usuario');
+    return this.http.get<any>(this.usersUrl).pipe(
+      map(data => {
+        const user = data.find((u: any) => u.id === userId && u.tipo === 'docente');
+        return user || null;
+      })
     );
   }
 
-  // Método para obtener el tipo de usuario actual (docente o estudiante)
-  getCurrentUserType(): string {
-    const storedProfessor = localStorage.getItem('currentProfessor');
-    const storedStudent = localStorage.getItem('currentStudent');
-    if (storedProfessor) return 'docente';
-    if (storedStudent) return 'estudiante';
-    return '';  // Si no hay usuario almacenado, retorna vacío
+  // Método para obtener el estudiante actual
+  getCurrentStudent(): Observable<any> {
+    const userId = localStorage.getItem('usuario');
+    return this.http.get<any>(this.usersUrl).pipe(
+      map(data => {
+        const user = data.find((u: any) => u.id === userId && u.tipo === 'estudiante');
+        return user || null;
+      })
+    );
   }
 
-  // Métodos para gestionar los estudiantes
-  setCurrentStudent(student: any): void {
-    this.currentStudent = student;
-    localStorage.setItem('currentStudent', JSON.stringify(student));
-  }
-
-  getCurrentStudent(): any {
-    return this.currentStudent;
-  }
-
-  // Métodos para gestionar los docentes
-  setCurrentProfessor(professor: any): void {
-    this.currentProfessor = professor;
-    localStorage.setItem('currentProfessor', JSON.stringify(professor));
-  }
-
-  getCurrentProfessor(): any {
-    return this.currentProfessor;
+  // Método para obtener las asignaturas del usuario actual (docente o estudiante)
+  getCurrentUserAsignaturas(): Observable<any[]> {
+    const userId = localStorage.getItem('usuario');
+    return this.http.get<any>(this.usersUrl).pipe(
+      map(data => {
+        const user = data.find((u: any) => u.id === userId);
+        return user ? user.materias : [];
+      })
+    );
   }
 }
