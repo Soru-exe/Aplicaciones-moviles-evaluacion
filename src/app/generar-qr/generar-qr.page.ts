@@ -9,6 +9,7 @@ import { AuthenticationService } from '../authentication.service';
 export class GenerarQrPage implements OnInit {
   asignaturas: { materia: string; secciones: string[] }[] = [];
   selectedAsignatura: { materia: string; secciones: string[] } | null = null;
+  selectedSeccion: string = '';
   qrData: string = '';
   qrGenerado: boolean = false;
 
@@ -21,13 +22,19 @@ export class GenerarQrPage implements OnInit {
     });
   }
 
-  // Generar datos para el QR basados en la asignatura seleccionada
+  // Generar datos para el QR basados en la asignatura y sección seleccionada
   generarQR() {
-    if (this.selectedAsignatura) {
+    if (this.selectedAsignatura && this.selectedSeccion) {
       const materia = this.selectedAsignatura.materia;
-      const secciones = this.selectedAsignatura.secciones.join(', ');
-      this.qrData = `Asignatura: ${materia}, Secciones: ${secciones}`;
+      const seccion = this.selectedSeccion;
+      this.qrData = `Asignatura: ${materia}, Sección: ${seccion}`;
       this.qrGenerado = true;
     }
+  }
+
+  // Reinicia el estado de QR cuando se selecciona una nueva asignatura
+  onAsignaturaChange() {
+    this.selectedSeccion = ''; // Limpiar la sección al cambiar de asignatura
+    this.qrGenerado = false; // Ocultar QR hasta que se vuelva a generar
   }
 }

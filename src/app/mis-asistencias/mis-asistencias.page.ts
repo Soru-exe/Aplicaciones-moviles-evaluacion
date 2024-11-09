@@ -1,39 +1,41 @@
-
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-mis-asistencias',
   templateUrl: './mis-asistencias.page.html',
   styleUrls: ['./mis-asistencias.page.scss'],
 })
-export class MisAsistenciasPage {
-  // Lista de asignaturas disponibles
-  asignaturas: string[] = ['Programación Avanzada', 'Bases de Datos', 'Redes y Comunicaciones'];
+export class MisAsistenciasPage implements OnInit {
+  asignaturas: any[] = [];
+  asistencias: any[] = [];
+  selectedAsignatura: string = '';
+  userType: string = '';
 
-  // Variable para almacenar la asignatura seleccionada
-  asignaturaSeleccionada: string = '';
+  constructor(private authService: AuthenticationService) {}
 
-  // Lista completa de asistencias
-  asistencias: { alumno: string; asignatura: string; fecha: string; estado: string }[] = [
-    { alumno: 'Juan Pérez', asignatura: 'Programación Avanzada', fecha: '2024-09-15', estado: 'Presente' },
-    { alumno: 'María García', asignatura: 'Bases de Datos', fecha: '2024-09-14', estado: 'Ausente' },
-    { alumno: 'Luis Torres', asignatura: 'Redes y Comunicaciones', fecha: '2024-09-13', estado: 'Presente' },
-    { alumno: 'Ana López', asignatura: 'Programación Avanzada', fecha: '2024-09-15', estado: 'Ausente' },
-  ];
+  ngOnInit() {
+    // Obtener el tipo de usuario
+    this.userType = this.authService.getCurrentUserType();
 
-  // Lista de asistencias filtradas según la asignatura seleccionada
-  asistenciasFiltradas: { alumno: string; asignatura: string; fecha: string; estado: string }[] = [];
+    // Cargar asignaturas del usuario actual
+    this.authService.getCurrentUserAsignaturas().subscribe((asignaturas) => {
+      this.asignaturas = asignaturas;
+    });
+  }
 
-  constructor() {}
-
-  // Filtrar asistencias según la asignatura seleccionada
-  filtrarAsistencias() {
-    if (this.asignaturaSeleccionada) {
-      this.asistenciasFiltradas = this.asistencias.filter(
-        asistencia => asistencia.asignatura === this.asignaturaSeleccionada
-      );
-    } else {
-      this.asistenciasFiltradas = [];
+  // Cargar asistencias basadas en la asignatura seleccionada
+  cargarAsistencias() {
+    if (this.selectedAsignatura) {
+      if (this.userType === 'estudiante') {
+        this.authService.getStudentAsistencias(this.selectedAsignatura).subscribe((asistencias) => {
+          this.asistencias = asistencias;
+        });
+      } else if (this.userType === 'docente') {
+        this.authService.getProfessorAsistencias(this.selectedAsignatura).subscribe((asistencias) => {
+          this.asistencias = asistencias;
+        });
+      }
     }
   }
 }

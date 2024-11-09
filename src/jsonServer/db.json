@@ -38,6 +38,7 @@
   "asistencias": [
     {
       "idEstudiante": "2",
+      "nombreEstudiante":"Carlos Silva",
       "idMateria": "Matematicas",
       "fecha": "2024-11-06",
       "estado": "presente",

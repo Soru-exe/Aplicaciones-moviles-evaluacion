@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { AlertController } from '@ionic/angular';
-
+import { ToastController } from '@ionic/angular';
 @Component({
   selector: 'app-pagina-inicio-estudiante',
   templateUrl: './pagina-inicio-estudiante.page.html',
@@ -12,7 +12,8 @@ export class PaginaInicioEstudiantePage {
 
   constructor(
     private barcodeScanner: BarcodeScanner,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private toastController: ToastController
   ) {}
 
   // Método para iniciar el escaneo del código de barras o QR
@@ -47,5 +48,14 @@ export class PaginaInicioEstudiantePage {
       buttons: ['OK'],
     });
     await alert.present();
+  }
+  async salir() {
+    const toast = await this.toastController.create({
+      message: 'Has cerrado sesión.',
+      duration: 2000,
+      color: 'danger',
+    });
+    await toast.present();
+    localStorage.clear(); // Limpia la información de sesión
   }
 }
